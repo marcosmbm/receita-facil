@@ -2,14 +2,19 @@ import { useState, useEffect } from 'react';
 
 import api from '../services/api';
 
-export function useFoods() {
+export function useFoods(params=null) {
+
     const [foods, setFoods] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function loadFoods() {
+            setLoading(true);
+            
             try {
-                const response = await api.get('/foods');
+                const url = params ? `/foods?name_like=${params}` : '/foods'
+
+                const response = await api.get(url);
                 setFoods(response.data);
             }
             catch (error) {

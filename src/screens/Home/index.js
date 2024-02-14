@@ -1,32 +1,78 @@
 import { useState } from 'react';
 import { useFoods } from '../../hooks/useFoods';
+import { useNavigation } from '@react-navigation/native';
 
 import {
-  Text,
   StyleSheet,
   SafeAreaView,
   View,
   TextInput,
   TouchableOpacity,
-  FlatList
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Text as MotiText} from 'moti';
 
 import Logo from '../../components/Logo';
-import FoodItem from '../../components/FoodItem';
-import Loader from '../../components/Loader';
+import ListFoods from '../../components/ListFoods';
 
 export default function Home() {
   const { foods, loading } = useFoods();
 
+  const navitagion = useNavigation();
+
   const [inputSearch, setInputSearch] = useState('');
+
+  function handleSearch(){
+    const search = inputSearch.trim();
+
+    if(search === '') return;
+
+    navitagion.navigate('Search', {
+      name: search
+    })
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <Logo />
 
-      <Text style={styles.title}>Encontre a receita</Text>
-      <Text style={styles.title}>que combina com você</Text>
+      <MotiText 
+        style={styles.title}
+        from={{
+          opacity: 0,
+          translateY: 15
+        }}
+        animate={{
+          opacity: 1,
+          translateY: 0
+        }}
+        transition={{
+          delay: 100,
+          type: 'timing',
+          duration: 650
+        }}
+      >
+        Encontre a receita
+      </MotiText>
+      
+      <MotiText 
+        style={styles.title}
+        from={{
+          opacity: 0,
+          translateY: 15
+        }}
+        animate={{
+          opacity: 1,
+          translateY: 0
+        }}
+        transition={{
+          delay: 100,
+          type: 'timing',
+          duration: 650
+        }}
+      >
+        que combina com você
+      </MotiText>
 
       <View style={styles.form}>
         <TextInput
@@ -38,6 +84,7 @@ export default function Home() {
 
         <TouchableOpacity
           activeOpacity={0.8}
+          onPress={handleSearch}
         >
           <Ionicons
             name='search'
@@ -47,20 +94,10 @@ export default function Home() {
         </TouchableOpacity>
       </View>
 
-      {
-        loading ? (
-          <Loader />
-        )
-        :
-        (
-          <FlatList
-            data={foods}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <FoodItem data={item} />}
-            showsVerticalScrollIndicator={false}
-          />
-        )
-      }
+      <ListFoods
+        foods={foods}
+        loading={loading}
+      />
     </SafeAreaView>
   );
 }

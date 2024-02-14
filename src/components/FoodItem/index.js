@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-
 import {LinearGradient} from 'expo-linear-gradient';
+
+import Banner from '../Banner';
 
 export default function FoodItem({ data }) {
     const navigation = useNavigation();
@@ -17,9 +18,8 @@ export default function FoodItem({ data }) {
             onPress={handleNavigate}
         >
             <View style={styles.container}>
-                <Image
+                <Banner
                     source={{ uri: data.cover }}
-                    style={styles.cover}
                 />
 
                 <View style={styles.info}>
@@ -45,11 +45,6 @@ const radius = 14;
 const styles = StyleSheet.create({
     container: {
         marginBottom: 14
-    },
-    cover: {
-        width: '100%',
-        height: 200,
-        borderRadius: radius
     },
     info:{
         position: 'absolute',
